@@ -1,0 +1,14 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "Cimento todas as obras 50kg",
+      "description": "Cimento de alta qualidade para todas as obras.",
+      "price": 50.00,
+      "category": "Materiais de Construção",
+      "imageUrl": "https://link-da-imagem.com/cimento.jpg",
+      "stock": 15
+    }
+  ],
+  "users": []
+}
