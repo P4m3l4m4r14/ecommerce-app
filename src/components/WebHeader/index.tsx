@@ -14,11 +14,13 @@ export function WebHeader() {
     <View style={styles.headerWrapper}>
         <View style={styles.container}>
         {/* Bloco 1: Logo */}
-        <Image 
-          source={theme.assets.logo} 
-          style={styles.logo} 
-          resizeMode="contain" 
-        />
+        {/*<View style={styles.logoContainer}> */}
+          <Image 
+            source={theme.assets.logo} // Mantém a logo completa na web
+            style={styles.logo} 
+            resizeMode="contain" 
+          />
+        {/*</View>
         {/* Bloco 2: Search Bar (Renderização similar ao referencial) */}
         <View style={styles.searchBox}>
           <TextInput 
@@ -56,11 +58,11 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: theme.colors.primary, 
     alignItems: 'center',
-    borderBottomWidth: 1,
+    borderBottomWidth: 0,
     borderBottomColor: theme.colors.border,
   },
   container: {
-    height: 80,
+    height: 90,
     width: '100%',
     maxWidth: 1200,
     //backgroundColor: theme.colors.surface,
@@ -71,8 +73,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.border,
   },
+  logoContainer: {
+    backgroundColor: theme.colors.surface,
+    paddingVertical: 8,
+    paddingHorizontal: 4,
+    borderRadius: 8,
+    marginRight: 32,
+  },
   logo: {
-    height: 50,
+    height: 60,
     width: 150,
   },
   searchBox: {
@@ -83,7 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.surface,
     borderRadius: 8,
     paddingHorizontal: 16,
-    marginHorizontal: 32,
+    marginHorizontal: 0,
     height: 48,
   },
   searchInput: {

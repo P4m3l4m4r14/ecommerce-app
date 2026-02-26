@@ -3,6 +3,8 @@ import { Platform } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from '../Types/Navigation';
+import { Feather } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { theme } from '../theme';
 import { useAuth } from '../contexts/AuthContext';
 import HomeScreen from '../screens/Home';
@@ -11,7 +13,7 @@ import ProductModal from '../screens/ProductModal';
 import LoginScreen from '../screens/Login'; 
 import RegisterScreen from '../screens/Register';
 import { WebHeader } from '../components/WebHeader';
-import { Feather } from '@expo/vector-icons';
+import { MobileHeader } from '../components/MobileHeader';
 
 // Instanciação dos objetos controladores
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -20,6 +22,7 @@ const Tab = createBottomTabNavigator();
 // Controlador do escopo das abas inferiores
 function TabRoutes() {
   const { isAuthenticated } = useAuth();
+  const insets = useSafeAreaInsets();
 
   return (
     <Tab.Navigator
@@ -31,6 +34,9 @@ function TabRoutes() {
           borderTopColor: theme.colors.border,
           // Branching de UI: Oculta a barra inferior se o interpretador for um navegador
           display: Platform.OS === 'web' ? 'none' : 'flex',
+          paddingBottom: Platform.OS === 'ios' ? insets.bottom : insets.bottom + 8, 
+          paddingTop: 8,
+          height: 60 + insets.bottom,
         },
         headerStyle: {
           backgroundColor: theme.colors.primary,
@@ -38,22 +44,40 @@ function TabRoutes() {
         headerTintColor: theme.colors.surface,
 
         // Branching de UI: Substitui o header nativo pela Navbar customizada na web
-        header: Platform.OS === 'web' ? () => <WebHeader /> : undefined,
+       header: () => Platform.OS === 'web' ? <WebHeader /> : <MobileHeader />,
       }}
     >
-      <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Catálogo' }}/>
+      <Tab.Screen 
+        name="Home" 
+        component={HomeScreen} 
+        options={{ 
+          title: 'Catálogo',
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="home" size={size} color={color} />
+          )
+        }}
+      />
       {/* Renderização Condicional da Tab Baseada no Estado */}
       {isAuthenticated ? (
         <Tab.Screen 
           name="Profile" 
           component={ProfileScreen} 
-          options={{ title: 'Meu Perfil' }} 
+          options={{ title: 'Meu Perfil',
+            tabBarIcon: ({ color, size }) => (
+              <Feather name="user-check" size={size} color={color} />
+            )
+          }}
         />
       ) : (
         <Tab.Screen 
           name="LoginTab" 
           component={LoginScreen} 
-          options={{ title: 'Login' }} 
+          options={{ 
+            title: 'Login',
+            tabBarIcon: ({ color, size }) => (
+              <Feather name="user" size={size} color={color} />
+            )
+          }} 
         />
       )}
     </Tab.Navigator>

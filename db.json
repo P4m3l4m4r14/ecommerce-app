@@ -1,14 +1,82 @@
 {
   "products": [
     {
-      "id": "1",
-      "name": "Cimento todas as obras 50kg",
-      "description": "Cimento de alta qualidade para todas as obras.",
-      "price": 50.00,
-      "category": "Materiais de Construção",
-      "imageUrl": "https://link-da-imagem.com/cimento.jpg",
-      "stock": 15
+  "products": [
+    {
+      "id": "p1",
+      "name": "Furadeira de Impacto 710W",
+      "description": "Furadeira de impacto com mandril de 1/2 polegada, velocidade variável e reversível. Ideal para perfurações em alvenaria, madeira e metal.",
+      "price": 289.90,
+      "category": "Ferramentas",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Furadeira+Impacto",
+      "stock": 25
+    },
+    {
+      "id": "p2",
+      "name": "Cimento CP II-Z 32 - 50kg",
+      "description": "Cimento Portland com Adição de Pozolana. Alta resistência inicial e secagem rápida. Indicado para concreto estrutural e argamassas.",
+      "price": 34.50,
+      "category": "Básico",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Cimento+50kg",
+      "stock": 150
+    },
+    {
+      "id": "p3",
+      "name": "Tubo de PVC Soldável 50mm (Barra 3m)",
+      "description": "Tubo de PVC para condução de água fria em instalações prediais. Suporta pressão de serviço de até 75 m.c.a.",
+      "price": 42.80,
+      "category": "Hidráulica",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Tubo+PVC+50mm",
+      "stock": 80
+    },
+    {
+      "id": "p4",
+      "name": "Cabo Flexível 2,5mm² - Rolo 100m (Preto)",
+      "description": "Cabo flexível com isolamento em PVC para instalações elétricas internas em baixa tensão (até 750V). Antichama.",
+      "price": 145.00,
+      "category": "Elétrica",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Cabo+Flexivel+2.5mm",
+      "stock": 40
+    },
+    {
+      "id": "p5",
+      "name": "Tinta Acrílica Fosca Branca 18L",
+      "description": "Tinta acrílica de alto rendimento para ambientes internos e externos. Excelente cobertura e resistência a intempéries.",
+      "price": 198.90,
+      "category": "Acabamento",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Tinta+Acrilica+18L",
+      "stock": 12
+    },
+    {
+      "id": "p6",
+      "name": "Serra Circular 7.1/4 Pol. 1400W",
+      "description": "Serra circular profissional com ajuste de profundidade e inclinação de corte. Acompanha disco de corte para madeira.",
+      "price": 415.00,
+      "category": "Ferramentas",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Serra+Circular",
+      "stock": 8
+    },
+    {
+      "id": "p7",
+      "name": "Tijolo Baiano 8 Furos (Milheiro)",
+      "description": "Tijolo cerâmico de vedação com 8 furos (9x19x19cm). Proporciona bom isolamento térmico e acústico para alvenaria.",
+      "price": 850.00,
+      "category": "Básico",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Tijolo+Baiano",
+      "stock": 5
+    },
+    {
+      "id": "p8",
+      "name": "Caixa d'Água Polietileno 1000L",
+      "description": "Reservatório de água com tampa e sistema de travamento. Proteção UV contra proliferação de bactérias e algas.",
+      "price": 320.00,
+      "category": "Hidráulica",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Caixa+d+Agua+1000L",
+      "stock": 20
     }
+  ],
+  "users": []
+}
   ],
   "users": []
 }
