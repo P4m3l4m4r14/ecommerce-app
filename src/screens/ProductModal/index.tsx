@@ -10,6 +10,7 @@ import { Product } from '../../Types/Products';
 import { Button } from '../../components/Button';
 import { useAuth } from '../../contexts/AuthContext';
 import { theme } from '../../theme';
+import { useCart } from '../../contexts/CartContext';
 
 type ProductModalRouteProp = RouteProp<RootStackParamList, 'ProductModal'>;
 
@@ -18,12 +19,14 @@ export default function ProductModal() {
   const route = useRoute<ProductModalRouteProp>();
   const { isAuthenticated } = useAuth();
 
-  const productId = route.params?.productId;
+  const { addToCart, updateQuantity, removeFromCart, cart } = useCart();
 
+  const productId = route.params?.productId;
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [quantity, setQuantity] = useState<number>(0);
+  const cartItem = cart.find(item => item.id === productId);
+  const [quantity, setQuantity] = useState<number>(cartItem ? cartItem.quantity : 0);
 
   useEffect(() => {
     if (!productId) {
@@ -49,42 +52,62 @@ export default function ProductModal() {
   };
 
   const handleInitialAdd = () => {
+    // BYPASS APLICADO: Linhas comentadas para permitir o teste de UI sem login
+    /*
     if (!isAuthenticated) {
       navigation.navigate('Login');
       return;
     }
-    setQuantity(1);
-    // TODO: Disparar action (dispatch) para o Contexto Global do Carrinho aqui
+    */
+    
+    if (product) {
+      setQuantity(1);
+      addToCart(product, 1);
+    }
   };
 
   const handleIncrement = () => {
     if (product && quantity < product.stock) {
       const newQuantity = quantity + 1;
       setQuantity(newQuantity);
-      // TODO: Disparar action de update no Contexto Global
+      updateQuantity(product.id, newQuantity);
     }
   };
 
   const handleDecrement = () => {
-    if (quantity > 0) {
+    if (product && quantity > 0) {
       const newQuantity = quantity - 1;
       setQuantity(newQuantity);
+      
+      if (newQuantity === 0) {
+        removeFromCart(product.id);
+      } else {
+        updateQuantity(product.id, newQuantity);
+      }
     }
   };
 
   const handleInputChange = (text: string) => {
+    if (!product) return;
+
     const numericValue = text.replace(/[^0-9]/g, '');
     let parsedValue = parseInt(numericValue, 10);
 
-    if (isNaN(parsedValue)) {
-      parsedValue = 0;
-    }
-
-    if (product && parsedValue > product.stock) {
-      parsedValue = product.stock;
-    }
+    if (isNaN(parsedValue)) parsedValue = 0;
+    if (parsedValue > product.stock) parsedValue = product.stock;
 
     setQuantity(parsedValue);
+    
+    if (parsedValue === 0) {
+      removeFromCart(product.id);
+    } else {
+      const exists = cart.some(item => item.id === product.id);
+      if (exists) {
+        updateQuantity(product.id, parsedValue);
+      } else {
+        addToCart(product, parsedValue);
+      }
+    }
   };
 
   if (isLoading) {

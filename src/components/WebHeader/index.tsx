@@ -1,26 +1,28 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { Feather } from '@expo/vector-icons';
 import { theme } from '../../theme';
 import { useAuth } from '../../contexts/AuthContext';
+import { styles } from './styles';
+import { useCart } from '../../contexts/CartContext';
 
 export function WebHeader() {
   const { isAuthenticated } = useAuth();
   const navigation = useNavigation<BottomTabNavigationProp<any>>();
+  const { cart } = useCart();
+  const cartItemCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
     <View style={styles.headerWrapper}>
         <View style={styles.container}>
         {/* Bloco 1: Logo */}
-        {/*<View style={styles.logoContainer}> */}
           <Image 
             source={theme.assets.logo} // Mantém a logo completa na web
             style={styles.logo} 
             resizeMode="contain" 
           />
-        {/*</View>
         {/* Bloco 2: Search Bar (Renderização similar ao referencial) */}
         <View style={styles.searchBox}>
           <TextInput 
@@ -44,87 +46,18 @@ export function WebHeader() {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('Cart')}>
             <Feather name="shopping-cart" size={24} color={theme.colors.surface} />
+            {cartItemCount > 0 && (
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>
+                  {cartItemCount > 99 ? '99+' : cartItemCount}
+                </Text>
+              </View>
+            )}
           </TouchableOpacity>
         </View>
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-    headerWrapper: {
-    width: '100%',
-    backgroundColor: theme.colors.primary, 
-    alignItems: 'center',
-    borderBottomWidth: 0,
-    borderBottomColor: theme.colors.border,
-  },
-  container: {
-    height: 90,
-    width: '100%',
-    maxWidth: 1200,
-    //backgroundColor: theme.colors.surface,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.colors.border,
-  },
-  logoContainer: {
-    backgroundColor: theme.colors.surface,
-    paddingVertical: 8,
-    paddingHorizontal: 4,
-    borderRadius: 8,
-    marginRight: 32,
-  },
-  logo: {
-    height: 60,
-    width: 150,
-  },
-  searchBox: {
-    flex: 1, 
-    maxWidth: 600,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: theme.colors.surface,
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    marginHorizontal: 0,
-    height: 48,
-  },
-  searchInput: {
-    flex: 1,
-    height: '100%',
-    marginRight: 8,
-    //outlineStyle: 'none',
-    fontSize: 16,
-    color: theme.colors.text,
-},
-  navContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  actionButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 24,
-  },
-  textWrapper: {
-    marginLeft: 12,
-  },
-  navTextSmall: {
-    fontSize: 12,
-    color: theme.colors.surface,
-  },
-    navTextBold: {
-      fontSize: 14,
-      fontWeight: 'bold',
-      color: theme.colors.surface,
-    },
-    iconButton: {
-        padding: 8,
-    },
-});

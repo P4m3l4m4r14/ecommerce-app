@@ -14,9 +14,10 @@ import LoginScreen from '../screens/Login';
 import RegisterScreen from '../screens/Register';
 import { WebHeader } from '../components/WebHeader';
 import { MobileHeader } from '../components/MobileHeader';
+import CartScreen from '../screens/Cart';
 
-// Instanciação dos objetos controladores
-const Stack = createNativeStackNavigator<RootStackParamList>();
+// const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator();
 
 // Controlador do escopo das abas inferiores
@@ -43,7 +44,6 @@ function TabRoutes() {
         },
         headerTintColor: theme.colors.surface,
 
-        // Branching de UI: Substitui o header nativo pela Navbar customizada na web
        header: () => Platform.OS === 'web' ? <WebHeader /> : <MobileHeader />,
       }}
     >
@@ -88,11 +88,10 @@ export function Routes() {
   return (
     <Stack.Navigator initialRouteName="MainTabs">
       <Stack.Screen name="MainTabs" component={TabRoutes} options={{ headerShown: false }} />
-      
       <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
-      
       <Stack.Screen name="ProductModal" component={ProductModal} options={{ presentation: 'modal' }} />
+      <Stack.Screen name="Cart" component={CartScreen} options={{ presentation: 'modal' }} />
     </Stack.Navigator>
   );
 }

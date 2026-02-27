@@ -39,9 +39,8 @@ export default function HomeScreen() {
   }, [selectedCategory]);
 
   const fetchProducts = async () => {
-    setIsLoading(true); // Reinicia o status de loading ao trocar de filtro
+    setIsLoading(true);
     try {
-      // Interpolação de string para construir o endpoint dinamicamente
       const endpoint = selectedCategory === 'Todos' 
         ? '/products' 
         : `/products?category=${selectedCategory}`;
@@ -62,7 +61,6 @@ export default function HomeScreen() {
     navigation.navigate('ProductModal', { productId: id });
   };
 
-  // Extração da barra de categorias para uma função de renderização local para manter o JSX limpo
   const renderCategoryChips = () => (
     <View style={styles.categoriesWrapper}>
       <ScrollView 
@@ -76,7 +74,6 @@ export default function HomeScreen() {
           return (
             <TouchableOpacity 
               key={category}
-              // Aplicação condicional de estilo (Active State)
               style={[styles.chip, isActive && styles.chipActive]}
               onPress={() => setSelectedCategory(category)}
               activeOpacity={0.7}
@@ -121,7 +118,7 @@ export default function HomeScreen() {
             <ProductCard 
               data={item} 
               onPress={() => handleNavigateToProduct(item.id)}
-              cardWidth={cardWidth} // Injeção da largura calculada dinamicamente
+              cardWidth={cardWidth}
             />
           )}
         />

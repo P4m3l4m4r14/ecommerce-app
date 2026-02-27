@@ -1,12 +1,24 @@
 import React from 'react';
-import { View, TextInput, StyleSheet, Image, TouchableOpacity, Platform } from 'react-native';
+import { View, TextInput, Image, TouchableOpacity, Platform, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { theme } from '../../theme';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
+import { theme } from '../../theme';
+import  { styles }  from './styles';
+import { RootStackParamList } from '../../Types/Navigation';
+import { useCart } from '../../contexts/CartContext';
+
+type HeaderNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export function MobileHeader() {
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation<HeaderNavigationProp>();
+ 
+  const { cart } = useCart();
+  const cartItemCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+
   const paddingTop = Platform.OS === 'android' ? insets.top + 12 : insets.top;
 
   return (
@@ -18,8 +30,18 @@ export function MobileHeader() {
             style={styles.logo} 
             resizeMode="contain" 
           />
-        <TouchableOpacity style={styles.iconButton}>
+        <TouchableOpacity 
+          style={styles.iconButton} 
+          onPress={() => navigation.navigate('Cart')}
+        >
           <Feather name="shopping-cart" size={26} color={theme.colors.surface} />
+          {cartItemCount > 0 && (
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>
+                {cartItemCount > 99 ? '99+' : cartItemCount}
+              </Text>
+            </View>
+          )}
         </TouchableOpacity>
       </View>
 
@@ -35,42 +57,3 @@ export function MobileHeader() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    backgroundColor: theme.colors.primary,
-    paddingHorizontal: 16,
-    paddingBottom: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.colors.border,
-  },
-  topRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  logo: {
-    height: 40,
-    width: 60,
-  },
-  iconButton: {
-    padding: 8,
-    marginRight: 0,
-  },
-  searchBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: theme.colors.surface,
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    height: 48,
-  },
-  searchInput: {
-    flex: 1,
-    height: '100%',
-    marginRight: 8,
-    fontSize: 16,
-  },
-});
