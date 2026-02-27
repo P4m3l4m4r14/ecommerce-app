@@ -17,7 +17,6 @@ export function ProductCard({ data, onPress, cardWidth }: ProductCardProps) {
 
   return (
     <TouchableOpacity 
-      // Injeta apenas o width dinâmico. O height crescerá automaticamente (auto) de acordo com o conteúdo
       style={[styles.container, { width: cardWidth }]} 
       onPress={onPress} 
       activeOpacity={0.9}
