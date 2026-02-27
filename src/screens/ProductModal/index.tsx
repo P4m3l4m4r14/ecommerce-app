@@ -1,6 +1,8 @@
-import React , { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, ActivityIndicator, ScrollView, Alert} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, StyleSheet, ActivityIndicator, ScrollView, Alert, TouchableOpacity, TextInput } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { Feather } from '@expo/vector-icons'; // Importação dos ícones vetoriais
+
 import { RootStackParamList } from '../../Types/Navigation';
 import { api } from '../../services/api';
 import { Product } from '../../Types/Products';
@@ -14,17 +16,15 @@ export default function ProductModal() {
   const navigation = useNavigation<any>();
   const route = useRoute<ProductModalRouteProp>();
   const { isAuthenticated } = useAuth();
-  
-  // Extração segura utilizando Optional Chaining
+
   const productId = route.params?.productId;
 
-  // Gerenciamento de estado local
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Gatilho de ciclo de vida atrelado ao ID do produto
+  const [quantity, setQuantity] = useState<number>(0);
+
   useEffect(() => {
-    // Guard Clause: Interrompe a execução e retorna à tela anterior se o ID for nulo
     if (!productId) {
       Alert.alert('Erro de Parâmetro', 'Identificador do produto não localizado.');
       navigation.goBack();
@@ -36,30 +36,56 @@ export default function ProductModal() {
 
   const fetchProductDetails = async () => {
     try {
-      // Endpoint RESTful buscando por ID específico
       const response = await api.get(`/products/${productId}`);
       setProduct(response.data);
     } catch (error) {
       console.error('Erro de requisição GET /products/:id:', error);
       Alert.alert('Erro de Sistema', 'Não foi possível carregar os dados deste item.');
-      navigation.goBack(); // Executa o pop na stack de navegação em caso de falha
+      navigation.goBack();
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleAddToCart = () => {
-    // Middleware de autenticação
+  const handleInitialAdd = () => {
     if (!isAuthenticated) {
       navigation.navigate('Login');
       return;
     }
-    
-    // Futura integração com o Context/Redux do Carrinho
-    Alert.alert('Sucesso', 'Produto alocado no carrinho de compras.');
+    setQuantity(1);
+    // TODO: Disparar action (dispatch) para o Contexto Global do Carrinho aqui
   };
 
-  // Renderização de estado de transição (Loading)
+  const handleIncrement = () => {
+    if (product && quantity < product.stock) {
+      const newQuantity = quantity + 1;
+      setQuantity(newQuantity);
+      // TODO: Disparar action de update no Contexto Global
+    }
+  };
+
+  const handleDecrement = () => {
+    if (quantity > 0) {
+      const newQuantity = quantity - 1;
+      setQuantity(newQuantity);
+    }
+  };
+
+  const handleInputChange = (text: string) => {
+    const numericValue = text.replace(/[^0-9]/g, '');
+    let parsedValue = parseInt(numericValue, 10);
+
+    if (isNaN(parsedValue)) {
+      parsedValue = 0;
+    }
+
+    if (product && parsedValue > product.stock) {
+      parsedValue = product.stock;
+    }
+
+    setQuantity(parsedValue);
+  };
+
   if (isLoading) {
     return (
       <View style={styles.centerContainer}>
@@ -68,10 +94,8 @@ export default function ProductModal() {
     );
   }
 
-  // Fallback de segurança caso a API retorne vazio
   if (!product) return null;
 
-  // Data Formatting
   const formattedPrice = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL'
@@ -103,11 +127,35 @@ export default function ProductModal() {
       </ScrollView>
 
       <View style={styles.footer}>
-        <Button 
-          title="Adicionar ao Carrinho" 
-          onPress={handleAddToCart} 
-          variant="primary" 
-        />
+        {quantity === 0 ? (
+          <Button 
+            title="Adicionar ao Carrinho" 
+            onPress={handleInitialAdd} 
+            variant="primary" 
+          />
+        ) : (
+          <View style={styles.stepperContainer}>
+            <TouchableOpacity style={styles.stepperButton} onPress={handleDecrement}>
+              <Feather name="minus" size={24} color={theme.colors.primary} />
+            </TouchableOpacity>
+            
+            <TextInput
+              style={styles.stepperInput}
+              keyboardType="numeric"
+              value={String(quantity)}
+              onChangeText={handleInputChange}
+              maxLength={4} // Previne overflow no buffer de input
+            />
+            
+            <TouchableOpacity 
+              style={[styles.stepperButton, quantity >= product.stock && styles.stepperButtonDisabled]} 
+              onPress={handleIncrement}
+              disabled={quantity >= product.stock}
+            >
+              <Feather name="plus" size={24} color={quantity >= product.stock ? theme.colors.textSecondary : theme.colors.primary} />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -191,5 +239,30 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
+  },stepperContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: theme.colors.background,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    height: 56, // Altura padronizada para hit-slop em mobile
+  },
+  stepperButton: {
+    paddingHorizontal: 24,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  stepperButtonDisabled: {
+    opacity: 0.5,
+  },
+  stepperInput: {
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: theme.colors.text,
   },
 });

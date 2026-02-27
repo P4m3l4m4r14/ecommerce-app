@@ -1,5 +1,3 @@
-{
-  "products": [
     {
   "products": [
     {
@@ -73,10 +71,34 @@
       "category": "Hidráulica",
       "imageUrl": "https://via.placeholder.com/300x300.png?text=Caixa+d+Agua+1000L",
       "stock": 20
+    },
+    {
+      "id": "p9",
+      "name": "Carrinho de Mão Capacidade 150kg",
+      "description": "Carrinho de mão resistente com capacidade de carga de 150kg. Ideal para transporte de materiais pesados em obras.",
+      "price": 189.90,
+      "category": "Básico",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Carrinho+Mão+150kg",
+      "stock": 5
+    },
+    {
+      "id": "p10",
+      "name": "Rejunte Epóxi Cinza 1kg",
+      "description": "Rejunte epóxi de alta resistência para uso em pisos e revestimentos. Ideal para impermeabilização e reparos em ambientes internos.",
+      "price": 28.90,
+      "category": "Acabamento",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Rejunte+Epoxi+Cinza",
+      "stock": 35
+    },
+    {
+      "id": "p11",
+      "name": "Parafuso Autoatarraxante 3,5x25mm (unidade)",
+      "description": "Parafuso com cabeça de 3,5mm e comprimento de 25mm. Autoatarraxante para fixação em madeira e metais.",
+      "price": 1.20,
+      "category": "Básico",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Parafuso+Autoatarraxante",
+      "stock": 3000
     }
-  ],
-  "users": []
-}
   ],
   "users": []
 }
