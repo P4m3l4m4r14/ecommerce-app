@@ -54,13 +54,10 @@ export default function ProductModal() {
   };
 
   const handleInitialAdd = () => {
-    // BYPASS APLICADO: Linhas comentadas para permitir o teste de UI sem login
-    /*
     if (!isAuthenticated) {
       navigation.navigate('Login');
       return;
     }
-    */
     
     if (product) {
       setQuantity(1);
@@ -170,7 +167,7 @@ export default function ProductModal() {
               keyboardType="numeric"
               value={String(quantity)}
               onChangeText={handleInputChange}
-              maxLength={4} // Previne overflow no buffer de input
+              maxLength={4}
             />
             
             <TouchableOpacity 

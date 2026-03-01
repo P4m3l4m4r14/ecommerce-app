@@ -10,6 +10,7 @@ import { RootStackParamList } from '../../Types/Navigation';
 import { ProductCard } from '../../components/ProductCard';
 import { theme } from '../../theme';
 import { useCart } from '../../contexts/CartContext';
+import { useAuth } from '../../contexts/AuthContext';
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'MainTabs'>;
 
@@ -19,6 +20,7 @@ export default function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const { width } = useWindowDimensions();
   const { addToCart } = useCart();
+  const { isAuthenticated } = useAuth();
   
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -39,6 +41,14 @@ export default function HomeScreen() {
   useEffect(() => {
     fetchProducts();
   }, [selectedCategory]);
+
+  const handleQuickAdd = (item: Product) => {
+    if (!isAuthenticated) {
+      navigation.navigate('Login');
+      return; 
+    }
+    addToCart(item, 1);
+  };
 
   const fetchProducts = async () => {
     setIsLoading(true);
@@ -115,7 +125,7 @@ export default function HomeScreen() {
             <ProductCard 
               data={item} 
               onPress={() => handleNavigateToProduct(item.id)}
-              onAddPress={() => addToCart(item, 1)} 
+              onAddPress={() => handleQuickAdd(item)}
               cardWidth={cardWidth} 
             />
           )}

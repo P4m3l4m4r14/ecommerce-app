@@ -2,7 +2,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { RootStackParamList } from '../Types/Navigation';
+// import { RootStackParamList } from '../Types/Navigation';
 import { Feather } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { theme } from '../theme';
@@ -88,10 +88,11 @@ export function Routes() {
   return (
     <Stack.Navigator initialRouteName="MainTabs">
       <Stack.Screen name="MainTabs" component={TabRoutes} options={{ headerShown: false }} />
-      <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
       <Stack.Screen name="ProductModal" component={ProductModal} options={{ presentation: 'modal' }} />
       <Stack.Screen name="Cart" component={CartScreen} options={{ presentation: 'modal' }} />
+      <Stack.Screen name="Login" component={LoginScreen} options={{ presentation: 'modal' }} />
+     {/* <Stack.Screen name="Login" component={LoginScreen} options={{ presentation: 'modal' }} />*/}
     </Stack.Navigator>
   );
 }

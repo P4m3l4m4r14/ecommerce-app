@@ -1,7 +1,7 @@
 export type RootStackParamList = {
-  MainTabs: undefined; 
+  MainTabs: undefined;
+  ProductModal: { productId: string };
   Login: undefined;
   Register: undefined;
-  Cart: undefined;
-  ProductModal: { productId: string } | undefined; 
+  Cart: undefined; 
 };
