@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, ActivityIndicator, ScrollView, Alert, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, Image, ActivityIndicator, ScrollView, Alert, TouchableOpacity, TextInput } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons'; 
 
 import {styles} from './styles';
@@ -18,6 +19,7 @@ export default function ProductModal() {
   const navigation = useNavigation<any>();
   const route = useRoute<ProductModalRouteProp>();
   const { isAuthenticated } = useAuth();
+  const insets = useSafeAreaInsets();
 
   const { addToCart, updateQuantity, removeFromCart, cart } = useCart();
 
@@ -150,7 +152,7 @@ export default function ProductModal() {
         </View>
       </ScrollView>
 
-      <View style={styles.footer}>
+      <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, 16) }]}>
         {quantity === 0 ? (
           <Button 
             title="Adicionar ao Carrinho" 

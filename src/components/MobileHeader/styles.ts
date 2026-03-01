@@ -48,9 +48,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: theme.colors.surface,
-    borderRadius: 8,
+    borderRadius: 12,
     paddingHorizontal: 16,
-    height: 48,
+    height: 40,
   },
   searchInput: {
     flex: 1,

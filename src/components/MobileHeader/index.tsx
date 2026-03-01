@@ -45,7 +45,7 @@ export function MobileHeader() {
         </TouchableOpacity>
       </View>
 
-      {/* Linha 2: Input de Busca */}
+      {/* Linha 2: Input de Busca (futuramente colocar ele entra os icones acima)*/}
       <View style={styles.searchBox}>
         <TextInput 
           style={styles.searchInput} 

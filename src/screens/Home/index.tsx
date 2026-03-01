@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, ActivityIndicator, Text, StyleSheet, ScrollView, TouchableOpacity, useWindowDimensions } from 'react-native';
+import { View, FlatList, ActivityIndicator, Text, ScrollView, TouchableOpacity, useWindowDimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -9,6 +9,7 @@ import { Product } from '../../Types/Products';
 import { RootStackParamList } from '../../Types/Navigation';
 import { ProductCard } from '../../components/ProductCard';
 import { theme } from '../../theme';
+import { useCart } from '../../contexts/CartContext';
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'MainTabs'>;
 
@@ -17,6 +18,7 @@ const CATEGORIES = ['Todos', 'Ferramentas', 'Básico', 'Hidráulica', 'Elétrica
 export default function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const { width } = useWindowDimensions();
+  const { addToCart } = useCart();
   
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -90,10 +92,8 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Montagem do Header de Filtros */}
       {renderCategoryChips()}
 
-      {/* Renderização Condicional de Estado de Rede */}
       {isLoading ? (
         <View style={styles.centerContainer}>
           <ActivityIndicator size="large" color={theme.colors.primary} />
@@ -109,16 +109,14 @@ export default function HomeScreen() {
           keyExtractor={(item) => String(item.id)}
           numColumns={numColumns}
           columnWrapperStyle={{ gap }} 
-          contentContainerStyle={[
-            styles.listContainer, 
-            { maxWidth: maxContentWidth, alignSelf: 'center', width: '100%' }
-          ]}
+          contentContainerStyle={[styles.listContainer, { maxWidth: maxContentWidth, alignSelf: 'center', width: '100%' }]}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <ProductCard 
               data={item} 
               onPress={() => handleNavigateToProduct(item.id)}
-              cardWidth={cardWidth}
+              onAddPress={() => addToCart(item, 1)} 
+              cardWidth={cardWidth} 
             />
           )}
         />
