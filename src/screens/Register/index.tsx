@@ -1,94 +1,122 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Platform } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { 
+  View, Text, TextInput, TouchableOpacity, StyleSheet, 
+  ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView 
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../../contexts/AuthContext';
 import { theme } from '../../theme';
-import { Alert } from 'react-native';
 import { api } from '../../services/api';
 
 export default function RegisterScreen() {
+  const navigation = useNavigation<any>();
+  const { signUp } = useAuth();
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [profession, setProfession] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const handleRegister = async () => {
-    if (!name || !email || !password || !profession) {
-      Alert.alert('Erro de Validação', 'Todos os campos são obrigatórios.');
+    // Validação estrita de escopo (Client-side Validation)
+    if (!name.trim() || !email.trim() || !password.trim()) {
+      Alert.alert('Validação Falhou', 'Todos os campos são obrigatórios.');
       return;
     }
 
-    const payload = {
-      name,
-      email,
-      password,
-      profession,
-    };
+    if (password !== confirmPassword) {
+      Alert.alert('Validação Falhou', 'As senhas não coincidem.');
+      return;
+    }
 
-    try {
-      const response = await api.post('/users', payload);
+    setIsLoading(true);
 
-      if (response.status === 201) {
-        Alert.alert('Sucesso', 'Conta criada no sistema.');
-        // Aqui você pode adicionar a lógica de navegação para redirecionar o usuário para a tela de Login
-      }
-    } catch (error) {
-      console.error('Erro na requisição POST:', error);
-      Alert.alert('Erro de Conexão', 'Não foi possível comunicar com o servidor.');
+    // Disparo da requisição HTTP
+    const success = await signUp(name, email, password);
+
+    setIsLoading(false);
+
+    if (success) {
+      Alert.alert('Sucesso', 'Conta criada com sucesso!');
+      // Retira a tela de registro da pilha e volta ao estado anterior
+      navigation.goBack(); 
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Image 
-        source={theme.assets.logo} 
-        style={styles.logo}
-        resizeMode="contain"
-      />
-      <Text style={styles.title}>Criar Conta</Text>
+    <KeyboardAvoidingView 
+      style={styles.container} 
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+        <Text style={styles.title}>Criar Conta</Text>
+        <Text style={styles.subtitle}>Cadastre-se para realizar pedidos na loja.</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Nome Completo"
-        value={name}
-        onChangeText={setName}
-      />
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Nome Completo</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Digite seu nome"
+            autoCapitalize="words"
+            value={name}
+            onChangeText={setName}
+          />
+        </View>
 
-      <TextInput
-        style={styles.input}
-        placeholder="E-mail"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        value={email}
-        onChangeText={setEmail}
-      />
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>E-mail</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Digite seu e-mail"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+            value={email}
+            onChangeText={setEmail}
+          />
+        </View>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Senha"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Senha</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Crie uma senha"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+        </View>
 
-      <View style={styles.pickerContainer}>
-        <Picker
-          selectedValue={profession}
-          onValueChange={(itemValue) => setProfession(itemValue)}
-          style={styles.picker}
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Confirmar Senha</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Repita sua senha"
+            secureTextEntry
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+          />
+        </View>
+
+        <TouchableOpacity 
+          style={styles.submitButton} 
+          onPress={handleRegister}
+          disabled={isLoading}
         >
-          <Picker.Item label="Selecione sua profissão..." value="" enabled={false} />
-          <Picker.Item label="Pedreiro" value="Pedreiro" />
-          <Picker.Item label="Mestre de Obra" value="Mestre de Obra" />
-          <Picker.Item label="Engenheiro" value="Engenheiro" />
-          <Picker.Item label="Arquiteto" value="Arquiteto" />
-          <Picker.Item label="Outro" value="Outro" />
-        </Picker>
-      </View>
-
-      <TouchableOpacity style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Cadastrar</Text>
-      </TouchableOpacity>
-    </View>
+          {isLoading ? (
+            <ActivityIndicator color={theme.colors.surface} />
+          ) : (
+            <Text style={styles.submitButtonText}>Cadastrar</Text>
+          )}
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.loginButton} onPress={() => navigation.goBack()}>
+          <Text style={styles.loginButtonText}>Já possui conta? Faça Login</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -98,6 +126,11 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.background,
     padding: 24,
     justifyContent: 'center',
+  },
+  scrollContent: { 
+    flexGrow: 1, 
+    justifyContent: 'center', 
+    padding: 24 ,
   },
   logo: {
     width: 120,
@@ -112,6 +145,18 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     textAlign: 'center',
   },
+  subtitle: { 
+    fontSize: 16, 
+    color: theme.colors.textSecondary, 
+    marginBottom: 32 ,
+  },
+  inputGroup: { marginBottom: 20 },
+  label: { 
+    fontSize: 14, 
+    fontWeight: '600', 
+    color: theme.colors.text, 
+    marginBottom: 8,
+   },
   input: {
     height: 50,
     borderWidth: 1,
@@ -137,17 +182,25 @@ const styles = StyleSheet.create({
     width: '100%',
     borderWidth: 0,
   },
-  button: {
-    height: 50,
+ submitButton: {
     backgroundColor: theme.colors.primary, 
+    padding: 16, 
     borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 2, 
+    alignItems: 'center', 
+    marginTop: 12,
   },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
+  submitButtonText: { 
+    color: '#FFF', 
+    fontSize: 16, 
+    fontWeight: 'bold' 
   },
+  loginButton: { 
+    marginTop: 24, 
+    alignItems: 'center' 
+  },
+  loginButtonText: { 
+    color: theme.colors.primary, 
+    fontSize: 14, 
+    fontWeight: '600' 
+  }
 });

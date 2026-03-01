@@ -1,10 +1,10 @@
-    {
+{
   "products": [
     {
       "id": "p1",
       "name": "Furadeira de Impacto 710W",
       "description": "Furadeira de impacto com mandril de 1/2 polegada, velocidade variável e reversível. Ideal para perfurações em alvenaria, madeira e metal.",
-      "price": 289.90,
+      "price": 289.9,
       "category": "Ferramentas",
       "imageUrl": "https://via.placeholder.com/300x300.png?text=Furadeira+Impacto",
       "stock": 25
@@ -13,7 +13,7 @@
       "id": "p2",
       "name": "Cimento CP II-Z 32 - 50kg",
       "description": "Cimento Portland com Adição de Pozolana. Alta resistência inicial e secagem rápida. Indicado para concreto estrutural e argamassas.",
-      "price": 34.50,
+      "price": 34.5,
       "category": "Básico",
       "imageUrl": "https://via.placeholder.com/300x300.png?text=Cimento+50kg",
       "stock": 150
@@ -22,7 +22,7 @@
       "id": "p3",
       "name": "Tubo de PVC Soldável 50mm (Barra 3m)",
       "description": "Tubo de PVC para condução de água fria em instalações prediais. Suporta pressão de serviço de até 75 m.c.a.",
-      "price": 42.80,
+      "price": 42.8,
       "category": "Hidráulica",
       "imageUrl": "https://via.placeholder.com/300x300.png?text=Tubo+PVC+50mm",
       "stock": 80
@@ -31,7 +31,7 @@
       "id": "p4",
       "name": "Cabo Flexível 2,5mm² - Rolo 100m (Preto)",
       "description": "Cabo flexível com isolamento em PVC para instalações elétricas internas em baixa tensão (até 750V). Antichama.",
-      "price": 145.00,
+      "price": 145,
       "category": "Elétrica",
       "imageUrl": "https://via.placeholder.com/300x300.png?text=Cabo+Flexivel+2.5mm",
       "stock": 40
@@ -40,7 +40,7 @@
       "id": "p5",
       "name": "Tinta Acrílica Fosca Branca 18L",
       "description": "Tinta acrílica de alto rendimento para ambientes internos e externos. Excelente cobertura e resistência a intempéries.",
-      "price": 198.90,
+      "price": 198.9,
       "category": "Acabamento",
       "imageUrl": "https://via.placeholder.com/300x300.png?text=Tinta+Acrilica+18L",
       "stock": 12
@@ -49,7 +49,7 @@
       "id": "p6",
       "name": "Serra Circular 7.1/4 Pol. 1400W",
       "description": "Serra circular profissional com ajuste de profundidade e inclinação de corte. Acompanha disco de corte para madeira.",
-      "price": 415.00,
+      "price": 415,
       "category": "Ferramentas",
       "imageUrl": "https://via.placeholder.com/300x300.png?text=Serra+Circular",
       "stock": 8
@@ -58,7 +58,7 @@
       "id": "p7",
       "name": "Tijolo Baiano 8 Furos (Milheiro)",
       "description": "Tijolo cerâmico de vedação com 8 furos (9x19x19cm). Proporciona bom isolamento térmico e acústico para alvenaria.",
-      "price": 850.00,
+      "price": 850,
       "category": "Básico",
       "imageUrl": "https://via.placeholder.com/300x300.png?text=Tijolo+Baiano",
       "stock": 5
@@ -67,7 +67,7 @@
       "id": "p8",
       "name": "Caixa d'Água Polietileno 1000L",
       "description": "Reservatório de água com tampa e sistema de travamento. Proteção UV contra proliferação de bactérias e algas.",
-      "price": 320.00,
+      "price": 320,
       "category": "Hidráulica",
       "imageUrl": "https://via.placeholder.com/300x300.png?text=Caixa+d+Agua+1000L",
       "stock": 20
@@ -76,7 +76,7 @@
       "id": "p9",
       "name": "Carrinho de Mão Capacidade 150kg",
       "description": "Carrinho de mão resistente com capacidade de carga de 150kg. Ideal para transporte de materiais pesados em obras.",
-      "price": 189.90,
+      "price": 189.9,
       "category": "Básico",
       "imageUrl": "https://via.placeholder.com/300x300.png?text=Carrinho+Mão+150kg",
       "stock": 5
@@ -85,7 +85,7 @@
       "id": "p10",
       "name": "Rejunte Epóxi Cinza 1kg",
       "description": "Rejunte epóxi de alta resistência para uso em pisos e revestimentos. Ideal para impermeabilização e reparos em ambientes internos.",
-      "price": 28.90,
+      "price": 28.9,
       "category": "Acabamento",
       "imageUrl": "https://via.placeholder.com/300x300.png?text=Rejunte+Epoxi+Cinza",
       "stock": 35
@@ -94,11 +94,19 @@
       "id": "p11",
       "name": "Parafuso Autoatarraxante 3,5x25mm (unidade)",
       "description": "Parafuso com cabeça de 3,5mm e comprimento de 25mm. Autoatarraxante para fixação em madeira e metais.",
-      "price": 1.20,
+      "price": 1.2,
       "category": "Básico",
       "imageUrl": "https://via.placeholder.com/300x300.png?text=Parafuso+Autoatarraxante",
       "stock": 3000
     }
   ],
-  "users": []
+  "users": [
+    {
+      "id": "ce5c",
+      "name": "Teste Testado",
+      "email": "teste123@gmail.com",
+      "password": "SenhaForte"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

@@ -78,7 +78,10 @@ export default function LoginScreen() {
         </TouchableOpacity>
         
         {/* Placeholder para futura tela de registro */}
-        <TouchableOpacity style={styles.registerButton}>
+        <TouchableOpacity 
+          style={styles.registerButton}
+          onPress={() => navigation.navigate('Register')}
+        >
           <Text style={styles.registerButtonText}>Não possui conta? Cadastre-se</Text>
         </TouchableOpacity>
       </View>

@@ -13,6 +13,7 @@ interface AuthContextData {
   isAuthenticated: boolean;
   signIn: (email: string, password: string) => Promise<boolean>;
   signOut: () => void;
+  signUp: (name: string, email: string, password: string) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -22,23 +23,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const isAuthenticated = !!user;
 
-  const signIn = async (email: string, password: string): Promise<boolean> => {
+  const signUp = async (name: string, email: string, password: string): Promise<boolean> => {
     try {
-      const response = await api.get('/users', {
-        params: { email, password }
-      });
-
-      const users: User[] = response.data;
-
-      if (users.length > 0) {
-        setUser(users[0]); 
-        return true;
-      } else {
+      const checkResponse = await api.get('/users', { params: { email } });
+      
+      if (checkResponse.data.length > 0) {
+        Alert.alert('Conflito de Dados', 'Este e-mail já está registrado no sistema.');
         return false;
       }
+
+      const payload = { name, email, password };
+      const createResponse = await api.post('/users', payload);
+
+      if (createResponse.status === 201) { 
+        setUser(createResponse.data); 
+        return true;
+      }
+      return false;
     } catch (error) {
-      console.error('Falha na requisição de autenticação:', error);
-      Alert.alert('Erro de Conexão', 'Não foi possível contatar o servidor de autenticação.');
+      console.error('Falha na requisição de cadastro:', error);
+      Alert.alert('Erro de Conexão', 'Não foi possível contatar o servidor.');
+      return false;
+    }
+  };
+
+  const signIn = async (email: string, password: string): Promise<boolean> => {
+    try {
+      const response = await api.get('/users', { params: { email, password } });
+      
+      if (response.data.length > 0) {
+        setUser(response.data[0]);
+        return true;
+      }
+      
+      Alert.alert('Erro de Autenticação', 'E-mail ou senha incorretos.');
+      return false;
+    } catch (error) {
+      console.error('Falha na requisição de login:', error);
+      Alert.alert('Erro de Conexão', 'Não foi possível contatar o servidor.');
       return false;
     }
   };
@@ -48,7 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut, signUp }}>
       {children}
     </AuthContext.Provider>
   );
