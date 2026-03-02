@@ -39,7 +39,6 @@ export default function RegisterScreen() {
 
     if (success) {
       Alert.alert('Sucesso', 'Conta criada com sucesso!');
-      // Retira a tela de registro da pilha e volta ao estado anterior
       navigation.goBack(); 
     }
   };

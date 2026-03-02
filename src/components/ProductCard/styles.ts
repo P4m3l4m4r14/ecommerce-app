@@ -22,6 +22,18 @@ export const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     marginBottom: 16,
   },
+  favoriteButton: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 36,
+    height: 36,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    borderRadius: 18,
+  },
   quickAddButton: {
     position: 'absolute',
     bottom: 0,

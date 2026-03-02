@@ -118,6 +118,13 @@
       "name": "Teste Bem Testado",
       "email": "teste@loading.com",
       "password": "Teste"
+    },
+    {
+      "id": "2901",
+      "name": "Super Teste Testado",
+      "email": "testinho@test.com",
+      "password": "teste",
+      "profession": "Mestre de Obra"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
