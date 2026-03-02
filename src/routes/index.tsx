@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { View, ActivityIndicator, Platform } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // import { RootStackParamList } from '../Types/Navigation';
@@ -85,6 +85,15 @@ function TabRoutes() {
 }
 
 export function Routes() {
+  const { isAuthLoading } = useAuth();
+
+  if (isAuthLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
   return (
     <Stack.Navigator initialRouteName="MainTabs">
       <Stack.Screen name="MainTabs" component={TabRoutes} options={{ headerShown: false }} />

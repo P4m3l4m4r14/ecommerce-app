@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Product } from '../Types/Products';
 
 export interface CartItem extends Product {
@@ -15,8 +16,37 @@ interface CartContextData {
 
 const CartContext = createContext<CartContextData>({} as CartContextData);
 
+const STORAGE_CART_KEY = '@BuildStore:cart';
+
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [isCartHydrated, setIsCartHydrated] = useState(false);
+
+  useEffect(() => {
+    async function loadCartData() {
+      try {
+        const storagedCart = await AsyncStorage.getItem(STORAGE_CART_KEY);
+        if (storagedCart) {
+          setCart(JSON.parse(storagedCart));
+        }
+      } catch (error) {
+        console.error('Erro ao carregar o carrinho:', error);
+      } finally {
+        setIsCartHydrated(true);
+      }
+    }
+
+    loadCartData();
+  }, []);
+
+  useEffect(() => {
+    if (!isCartHydrated) return;
+    async function syncStorage() {
+      await AsyncStorage.setItem(STORAGE_CART_KEY, JSON.stringify(cart));
+    }
+    syncStorage();
+  }, [cart, isCartHydrated]);
+
 
   const addToCart = (product: Product, quantity: number) => {
     setCart((prevCart) => {
