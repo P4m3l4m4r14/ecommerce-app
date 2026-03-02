@@ -3,13 +3,19 @@ import { View, Text, FlatList, TouchableOpacity, Alert, Platform } from 'react-n
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCart } from '../../contexts/CartContext';
 import { CartItemCard } from '../../components/CartItemCard';
+import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
 
 export default function CartScreen() {
+  const navigation = useNavigation<any>();
   const { cart, clearCart } = useCart();
   const insets = useSafeAreaInsets();
 
   const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+  const handleCheckoutNavigation = () => {
+    navigation.navigate('Checkout');
+  };
   
   const formattedTotal = new Intl.NumberFormat('pt-BR', {
     style: 'currency', currency: 'BRL'
@@ -65,9 +71,9 @@ export default function CartScreen() {
 
         <TouchableOpacity 
           style={styles.checkoutButton}
-          onPress={handleCheckout}
+          onPress={handleCheckoutNavigation}
         >
-          <Text style={styles.checkoutText}>Finalizar Compra</Text>
+          <Text style={styles.checkoutText}>Continuar para Pagamento</Text>
         </TouchableOpacity>
       </View>
     </View>

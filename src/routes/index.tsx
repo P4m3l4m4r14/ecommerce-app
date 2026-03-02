@@ -15,6 +15,7 @@ import RegisterScreen from '../screens/Register';
 import { WebHeader } from '../components/WebHeader';
 import { MobileHeader } from '../components/MobileHeader';
 import CartScreen from '../screens/Cart';
+import CheckoutScreen from '../screens/Checkout';
 
 // const Stack = createNativeStackNavigator<RootStackParamList>();
 const Stack = createNativeStackNavigator()
@@ -102,6 +103,7 @@ export function Routes() {
       <Stack.Screen name="Cart" component={CartScreen} options={{ presentation: 'modal' }} />
       <Stack.Screen name="Login" component={LoginScreen} options={{ presentation: 'modal' }} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="Checkout" component={CheckoutScreen} />
     </Stack.Navigator>
   );
 }

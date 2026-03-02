@@ -3,5 +3,7 @@ export type RootStackParamList = {
   ProductModal: { productId: string };
   Login: undefined;
   Register: undefined;
-  Cart: undefined; 
+  Cart: undefined;
+  Profile: undefined;
+  Checkout: undefined;
 };
