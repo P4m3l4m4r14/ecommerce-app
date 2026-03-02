@@ -54,13 +54,13 @@ export default function RegisterScreen() {
         <Text style={styles.subtitle}>Cadastre-se para realizar pedidos na loja.</Text>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Profissão / Área de Atuação</Text>
+          <Text style={styles.label}>Nome Completo</Text>
           <TextInput
             style={styles.input}
-            placeholder="Ex: Engenharia de Computação"
+            placeholder="Digite seu nome"
             autoCapitalize="words"
-            value={profession}
-            onChangeText={setProfession}
+            value={name}
+            onChangeText={setName}
           />
         </View>
 
@@ -74,6 +74,17 @@ export default function RegisterScreen() {
             autoCorrect={false}
             value={email}
             onChangeText={setEmail}
+          />
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Profissão / Área de Atuação</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Ex: Engenharia de Computação"
+            autoCapitalize="words"
+            value={profession}
+            onChangeText={setProfession}
           />
         </View>
 
