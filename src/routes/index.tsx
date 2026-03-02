@@ -101,7 +101,7 @@ export function Routes() {
       <Stack.Screen name="ProductModal" component={ProductModal} options={{ presentation: 'modal' }} />
       <Stack.Screen name="Cart" component={CartScreen} options={{ presentation: 'modal' }} />
       <Stack.Screen name="Login" component={LoginScreen} options={{ presentation: 'modal' }} />
-     {/* <Stack.Screen name="Login" component={LoginScreen} options={{ presentation: 'modal' }} />*/}
+      <Stack.Screen name="Profile" component={ProfileScreen} />
     </Stack.Navigator>
   );
 }

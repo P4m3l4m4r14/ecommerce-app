@@ -106,6 +106,18 @@
       "name": "Teste Testado",
       "email": "teste123@gmail.com",
       "password": "SenhaForte"
+    },
+    {
+      "id": "edda",
+      "name": "Teste Bem Testado",
+      "email": "teste@gmail.com",
+      "password": "Teste"
+    },
+    {
+      "id": "ce20",
+      "name": "Teste Bem Testado",
+      "email": "teste@loading.com",
+      "password": "Teste"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

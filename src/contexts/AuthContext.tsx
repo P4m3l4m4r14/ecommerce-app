@@ -7,6 +7,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  profession: string;
 }
 
 interface AuthContextData {
@@ -15,7 +16,8 @@ interface AuthContextData {
   isAuthLoading: boolean;
   signIn: (email: string, password: string) => Promise<boolean>;
   signOut: () => void;
-  signUp: (name: string, email: string, password: string) => Promise<boolean>;
+  signUp: (name: string, email: string, password: string, profession: string) => Promise<boolean>;
+  
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -66,26 +68,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
 
-  const signUp = async (name: string, email: string, password: string): Promise<boolean> => {
+  const signUp = async (name: string, email: string, password: string, profession: string): Promise<boolean> => {
     try {
       const checkResponse = await api.get('/users', { params: { email } });
-      
-      if (checkResponse.data.length > 0) {
-        Alert.alert('Conflito de Dados', 'Este e-mail já está registrado no sistema.');
-        return false;
-      }
+      if (checkResponse.data.length > 0) return false;
 
-      const payload = { name, email, password };
+      // Injeção do novo atributo no payload do POST request
+      const payload = { name, email, password, profession };
       const createResponse = await api.post('/users', payload);
 
-      if (createResponse.status === 201) { 
-        setUser(createResponse.data); 
+      if (createResponse.status === 201) {
+        const newUser = createResponse.data;
+        setUser(newUser);
+        await AsyncStorage.setItem(STORAGE_USER_KEY, JSON.stringify(newUser));
         return true;
       }
       return false;
     } catch (error) {
-      console.error('Falha na requisição de cadastro:', error);
-      Alert.alert('Erro de Conexão', 'Não foi possível contatar o servidor.');
       return false;
     }
   };

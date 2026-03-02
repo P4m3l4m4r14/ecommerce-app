@@ -16,12 +16,12 @@ export default function RegisterScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [profession, setProfession] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
 
   const handleRegister = async () => {
-    // Validação estrita de escopo (Client-side Validation)
-    if (!name.trim() || !email.trim() || !password.trim()) {
+    if (!name.trim() || !email.trim() || !password.trim() || !profession.trim()) {
       Alert.alert('Validação Falhou', 'Todos os campos são obrigatórios.');
       return;
     }
@@ -33,8 +33,7 @@ export default function RegisterScreen() {
 
     setIsLoading(true);
 
-    // Disparo da requisição HTTP
-    const success = await signUp(name, email, password);
+    const success = await signUp(name, email, password, profession);
 
     setIsLoading(false);
 
@@ -55,13 +54,13 @@ export default function RegisterScreen() {
         <Text style={styles.subtitle}>Cadastre-se para realizar pedidos na loja.</Text>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Nome Completo</Text>
+          <Text style={styles.label}>Profissão / Área de Atuação</Text>
           <TextInput
             style={styles.input}
-            placeholder="Digite seu nome"
+            placeholder="Ex: Engenharia de Computação"
             autoCapitalize="words"
-            value={name}
-            onChangeText={setName}
+            value={profession}
+            onChangeText={setProfession}
           />
         </View>
 
