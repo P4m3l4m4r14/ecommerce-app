@@ -21,12 +21,10 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.border,
   },
-  logoContainer: {
-    backgroundColor: theme.colors.surface,
-    paddingVertical: 8,
-    paddingHorizontal: 4,
-    borderRadius: 8,
-    marginRight: 32,
+  homeButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight:6,
   },
   logo: {
     height: 60,
